@@ -1,0 +1,161 @@
+{
+	"name": "PL_Generic_SQL_To_ADLS",
+	"properties": {
+		"activities": [
+			{
+				"name": "AT_LU_SQLQUERY",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT [Source],[Target],Source_type,Target_type,\nTarget_filename FROM CCNA_ADF_CONFIG.ADF_COPY_CONFIG\nWHERE ActivityName='@{pipeline().parameters.ActivityName}'\nand PipelineName='@{pipeline().parameters.PipelineName}'\nand AppName ='@{pipeline().parameters.AppName}'\nand Source_type='sql' and Target_type='adls'",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb",
+						"type": "DatasetReference",
+						"parameters": {
+							"AppName": {
+								"value": "@pipeline().globalParameters.AppName_BPP",
+								"type": "Expression"
+							},
+							"PipelineName": {
+								"value": "@pipeline().parameters.PipelineName",
+								"type": "Expression"
+							},
+							"ActivityName": {
+								"value": "@pipeline().parameters.ActivityName",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "AT_FE_LOOPCOLUMNS",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "AT_LU_SQLQUERY",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('AT_LU_SQLQUERY').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "AT_COPY_SQL_ADLS",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@item().Source",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "AzureSqlTable1",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_blob_refined",
+									"type": "DatasetReference",
+									"parameters": {
+										"FilePath": {
+											"value": "@item().Target",
+											"type": "Expression"
+										},
+										"FileName": {
+											"value": "@pipeline().parameters.FileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"AppName": {
+				"type": "string",
+				"defaultValue": "BPP"
+			},
+			"PipelineName": {
+				"type": "string",
+				"defaultValue": "PL_BPP"
+			},
+			"ActivityName": {
+				"type": "string",
+				"defaultValue": "AT_BPP"
+			},
+			"FileName": {
+				"type": "string",
+				"defaultValue": "BPP.csv"
+			}
+		},
+		"folder": {
+			"name": "Generic"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-04-30T05:23:47Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

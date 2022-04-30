@@ -1,0 +1,24 @@
+{
+	"name": "ds_sqldb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ln_sqlserver",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"AppName": {
+				"type": "string"
+			},
+			"PipelineName": {
+				"type": "string"
+			},
+			"ActivityName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

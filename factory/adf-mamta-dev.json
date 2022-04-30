@@ -1,0 +1,17 @@
+{
+	"name": "adf-mamta-dev",
+	"properties": {
+		"globalParameters": {
+			"AppName_BPP": {
+				"type": "string",
+				"value": "BPP"
+			}
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "c8412556-186f-4097-a701-a864eb611dd7",
+		"tenantId": "f3cecf61-88b2-4866-be53-a2732854f488"
+	}
+}
