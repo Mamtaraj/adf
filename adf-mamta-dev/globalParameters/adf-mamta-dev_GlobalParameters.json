@@ -1,0 +1,10 @@
+{
+	"AppName_BPP": {
+		"type": "string",
+		"value": "BPP"
+	},
+	"AppName_EmpDetails": {
+		"type": "string",
+		"value": "EmpDetails"
+	}
+}
