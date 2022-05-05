@@ -1,0 +1,31 @@
+{
+	"name": "PL_SendEmail",
+	"properties": {
+		"activities": [
+			{
+				"name": "SendEmail",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-76.eastus.logic.azure.com:443/workflows/6116c8278a144d91931ef2a8aed12ee1/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=xq2vcLi4WH5uRCiNlh0ST-pHeV4bDgI4JG05Naf7I5I",
+					"method": "POST",
+					"body": {
+						"pipeline name": "PL_Loadmultiple",
+						"error message ": "Error Message"
+					}
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2022-04-26T11:58:00Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

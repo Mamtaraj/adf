@@ -1,0 +1,19 @@
+{
+	"name": "ds_inputdataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ln_BlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Emp.txt",
+				"folderPath": "input",
+				"container": "adftutorials"
+			}
+		}
+	}
+}
