@@ -1,0 +1,16 @@
+{
+	"name": "AzureSqlDatabaseSrcDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabaseSrcLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "dummyTable"
+		}
+	}
+}
