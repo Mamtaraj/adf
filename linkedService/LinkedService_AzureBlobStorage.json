@@ -1,0 +1,11 @@
+{
+	"name": "LinkedService_AzureBlobStorage",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://testblobstoragedev.blob.core.windows.net",
+			"accountKind": "StorageV2"
+		}
+	}
+}
